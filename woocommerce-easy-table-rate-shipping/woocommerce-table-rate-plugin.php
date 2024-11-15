@@ -7,7 +7,7 @@
   Author: JEM Plugins
   Author URI: https://www.jem-products.com
   Requires at least: 5.0
-  Tested up to: 6.6
+  Tested up to: 6.7
   Requires PHP: 5.2
   Text-domain: woocommerce-easy-table-rate-shipping
 

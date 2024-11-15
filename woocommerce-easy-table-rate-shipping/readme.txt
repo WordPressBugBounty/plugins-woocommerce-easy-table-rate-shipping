@@ -2,7 +2,7 @@
 Contributors: merlinmonmouth, webfactory
 Tags: free shipping, table rate shipping, conditional shipping, tiered shipping, shipping
 Requires at least: 5.0
-Tested up to: 6.6
+Tested up to: 6.7
 Stable tag: 2.29
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
