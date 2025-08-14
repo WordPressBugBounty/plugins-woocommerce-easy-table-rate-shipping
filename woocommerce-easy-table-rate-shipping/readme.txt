@@ -2,8 +2,8 @@
 Contributors: merlinmonmouth, webfactory
 Tags: free shipping, table rate shipping, conditional shipping, tiered shipping, shipping
 Requires at least: 5.0
-Tested up to: 6.7
-Stable tag: 2.29
+Tested up to: 6.8
+Stable tag: 2.30
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -84,6 +84,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 
 == Changelog ==
+= 2.30 =
+* 2025-08-13
+* Minor code fixes
 
 = 2.29 =
 * 2023-03-27

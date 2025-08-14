@@ -3,16 +3,17 @@
   Plugin Name: Table Rate Shipping for WooCommerce
   Plugin URI: https://www.jem-products.com/
   Description: Configure shipping for WooCommerce based on a table of rates. Unlimited countries.
-  Version: 2.29
+  Version: 2.30
   Author: JEM Plugins
   Author URI: https://www.jem-products.com
   Requires at least: 5.0
-  Tested up to: 6.7
-  Requires PHP: 5.2
+  Tested up to: 6.8
+  Requires PHP: 7.2
+  License: GPLv2
   Text-domain: woocommerce-easy-table-rate-shipping
 
   Copyright 2015 - 2022  JEM Products  (email: support@jem-products.com)
-  Copyright 2021 - 2023  WebFactory Ltd  (email: support@webfactoryltd.com.com)
+  Copyright 2021 - 2025  WebFactory Ltd  (email: support@webfactoryltd.com.com)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -171,7 +172,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
           ob_start();
           if (isset($_GET['action']) && check_admin_referer('jemrt-shipping-nonce', 'jemrt-shipping-nonce') && current_user_can('manage_options')) {
-            $get_action_name = sanitize_text_field($_GET['action']);
+            $get_action_name = sanitize_text_field(wp_unslash($_GET['action']));
           }
 ?>
           <script>
@@ -220,16 +221,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             </td>
           </tr>
           <?php
-          $instance_id                        = sanitize_text_field($_GET['instance_id']);
+          $instance_id                        = sanitize_text_field(wp_unslash($_GET['instance_id'] ?? ''));
           $zone                               = WC_Shipping_Zones::get_zone_by('instance_id', $instance_id);
           $get_shipping_method_by_instance_id = WC_Shipping_Zones::get_shipping_method($instance_id);
-          $link_content                       = '<a href="' . admin_url('admin.php?page=wc-settings&tab=shipping') . '">' . __('Shipping Zones', 'woocommerce') . '</a> > ';
+          $link_content                       = '<a href="' . admin_url('admin.php?page=wc-settings&tab=shipping') . '">' . __('Shipping Zones', 'woocommerce-easy-table-rate-shipping') . '</a> > ';
           $link_content                      .= '<a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&zone_id=' . absint($zone->get_id())) . '">' . esc_html($zone->get_zone_name()) . '</a> > ';
           $link_content                      .= '<a href="' . admin_url('admin.php?page=wc-settings&tab=shipping&instance_id=' . (int) ($instance_id)) . '">' . esc_html(($get_shipping_method_by_instance_id->get_title())) . '</a>';
           // <!--check action is new or edit-->
           if ($get_action_name == 'new') {
             $link_content .= ' > ';
-            $link_content .= __('Add New', 'flexible-shipping');
+            $link_content .= __('Add New', 'woocommerce-easy-table-rate-shipping');
           ?>
             <script>
               //Link content is escaped in building the string
@@ -554,7 +555,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
             </script>
           <?php
           } else {
-            $method_id                    = sanitize_text_field($_GET['method_id']);
+            $method_id                    = sanitize_text_field(wp_unslash($_GET['method_id'] ?? ''));
             $get_shipping_methods_options = get_option($this->jem_shipping_methods_option, array());
             $shipping_method_array        = $get_shipping_methods_options[$method_id];
             $get_selected_method_title    = $shipping_method_array['method_title'];
@@ -1138,12 +1139,12 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         function admin_options()
         {
         ?>
-          <h2><?php esc_attr_e('Table Rate Shipping Options', 'woocommerce'); ?></h2>
+          <h2><?php esc_attr_e('Table Rate Shipping Options', 'woocommerce-easy-table-rate-shipping'); ?></h2>
           <table class="form-table">
             <?php
             $shipping_method_action = false;
             if (isset($_GET['action']) && check_admin_referer('jemrt-shipping-nonce', 'jemrt-shipping-nonce') && current_user_can('manage_options')) {
-              $shipping_method_action = sanitize_text_field($_GET['action']);
+              $shipping_method_action = sanitize_text_field(wp_unslash($_GET['action'] ?? ''));
             }
             if ($shipping_method_action == 'new' || $shipping_method_action == 'edit') {
               $get_shipping_methods_options = get_option($this->jem_shipping_methods_option, array());
@@ -1157,7 +1158,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
               );
               $method_id             = '';
               if ($shipping_method_action == 'edit') {
-                $method_id              = sanitize_text_field($_GET['method_id']);
+                $method_id              = sanitize_text_field(wp_unslash($_GET['method_id'] ?? ''));
                 $shipping_method_array  = $get_shipping_methods_options[$method_id];
                 $method_id_for_shipping = $this->id . '_' . $this->instance_id . '_' . sanitize_title($shipping_method_array['method_title']);
                 if (isset($shipping_method_array['method_id_for_shipping']) && $shipping_method_array['method_id_for_shipping'] != '') {
@@ -1182,7 +1183,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
               $selected_shipping_methods_id = '';
               // get selected methods id and explode it with ','
               if (isset($_GET['shipping_methods_id'])) {
-                $selected_shipping_methods_id = explode(',', sanitize_text_field($_GET['shipping_methods_id']));
+                $selected_shipping_methods_id = explode(',', sanitize_text_field(wp_unslash($_GET['shipping_methods_id'] ?? '')));
               }
               // get all shipping methods options for delete
               $get_shipping_methods_options_for_delete = get_option($this->jem_shipping_methods_option, array()); //
@@ -1262,7 +1263,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
           // first the CONDITION html
           $this->condition_array           = array();
+          /* translators: %s is replaced with the currently used WooCommerce weight unit */
           $this->condition_array['weight'] = sprintf(__('Weight (%s)', 'woocommerce-easy-table-rate-shipping'), get_option('woocommerce_weight_unit'));
+
+          /* translators: %s is replaced with the currently used WooCommerce currency symbol */
           $this->condition_array['total']  = sprintf(__('Total Price (%s)', 'woocommerce-easy-table-rate-shipping'), get_woocommerce_currency_symbol());
 
           // Now the countries
@@ -1282,7 +1286,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         {
           // first the CONDITION html
           $arr           = array();
+          /* translators: %s is replaced with the currently used WooCommerce weight unit */
           $arr['weight'] = sprintf(__('Weight (%s)', 'woocommerce-easy-table-rate-shipping'), get_option('woocommerce_weight_unit'));
+
+          /* translators: %s is replaced with the currently used WooCommerce currency symbol */
           $arr['total']  = sprintf(__('Total Price (%s)', 'woocommerce-easy-table-rate-shipping'), get_woocommerce_currency_symbol());
 
           // now create the html from the array
@@ -1331,7 +1338,10 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
           endforeach;
 
           // Now the conditions - cater for language & woo
+          /* translators: %s is replaced with the currently used WooCommerce weight unit */
           $option['condition']['weight'] = sprintf(__('Weight (%s)', 'woocommerce-easy-table-rate-shipping'), get_option('woocommerce_weight_unit'));
+
+          /* translators: %s is replaced with the currently used WooCommerce currency symbol */
           $option['condition']['price']  = sprintf(__('Total (%s)', 'woocommerce-easy-table-rate-shipping'), get_woocommerce_currency_symbol());
 
           return $options;
@@ -1359,8 +1369,8 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
         function process_admin_options()
         {
           $shipping_method_action = false;
-          if (isset($_POST['shipping_method_action']) && wp_verify_nonce($_POST['jemtr-shipping-nonce'], 'jemtr-shipping-save')) {
-            $shipping_method_action = sanitize_text_field($_POST['shipping_method_action']);
+          if (isset($_POST['shipping_method_action']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['jemtr-shipping-nonce'] ?? '')), 'jemtr-shipping-save')) {
+            $shipping_method_action = sanitize_text_field(wp_unslash($_POST['shipping_method_action'] ?? ''));
           }
           if ($shipping_method_action == 'new' || $shipping_method_action == 'edit') {
             // Arrays to hold the clean POST vars
@@ -1374,22 +1384,22 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
             // Take the POST vars, clean em up and put thme in nice arrays
             if (isset($_POST['key'])) {
-              $keys = array_map('wc_clean', $_POST['key']);
+              $keys = array_map('wc_clean', wp_unslash($_POST['key'])); //phpcs:ignore
             }
             if (isset($_POST['zone-name'])) {
-              $zone_name = array_map('wc_clean', $_POST['zone-name']);
+              $zone_name = array_map('wc_clean', wp_unslash($_POST['zone-name'])); //phpcs:ignore
             }
             if (isset($_POST['conditions'])) {
-              $conditions = $this->sanitize_array($_POST['conditions']);
+              $conditions = $this->sanitize_array($_POST['conditions']); //phpcs:ignore
             }
             if (isset($_POST['min'])) {
-              $min = $this->sanitize_array($_POST['min']);
+              $min = $this->sanitize_array($_POST['min']); //phpcs:ignore
             }
             if (isset($_POST['max'])) {
-              $max = $this->sanitize_array($_POST['max']);
+              $max = $this->sanitize_array($_POST['max']); //phpcs:ignore
             }
             if (isset($_POST['shipping'])) {
-              $shipping = $this->sanitize_array($_POST['shipping']);
+              $shipping = $this->sanitize_array($_POST['shipping']); //phpcs:ignore
             }
 
             // todo - need to add some validation here and some error messages???
@@ -1432,7 +1442,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
               // create the array to hold the data
               $options[$name]                        = array();
-              $options[$name]['method_handling_fee'] = sanitize_text_field($_POST['woocommerce_' . $this->id . '_method_handling_fee']);
+              $options[$name]['method_handling_fee'] = sanitize_text_field(wp_unslash($_POST['woocommerce_' . $this->id . '_method_handling_fee'] ?? ''));
               // $options[$name]['condition'] = $condition[$key];
               // $options[$name]['countries'] = $countries[$key];
               $options[$name]['min']      = $min[$key];
@@ -1455,27 +1465,27 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
               update_option('jem_table_rate_sub_shipping_method_id', $method_id);
               $method_id_for_shipping = $this->id . '_' . $this->instance_id . '_' . $method_id;
             } else {
-              $method_id              = sanitize_text_field($_POST['shipping_method_id']);
-              $method_id_for_shipping = sanitize_text_field($_POST['method_id_for_shipping']);
+              $method_id              = sanitize_text_field(wp_unslash($_POST['shipping_method_id'] ?? ''));
+              $method_id_for_shipping = sanitize_text_field(wp_unslash($_POST['method_id_for_shipping'] ?? ''));
             }
 
             $shipping_method_array['method_id']        = $method_id;
             $shipping_method['method_id_for_shipping'] = $method_id_for_shipping;
-            if (isset($_POST['woocommerce_' . $this->id . '_method_enabled']) && sanitize_text_field($_POST['woocommerce_' . $this->id . '_method_enabled']) == 1) {
+            if (isset($_POST['woocommerce_' . $this->id . '_method_enabled']) && sanitize_text_field(wp_unslash($_POST['woocommerce_' . $this->id . '_method_enabled'])) == 1) {
               $shipping_method_array['method_enabled'] = 'yes';
             } else {
               $shipping_method_array['method_enabled'] = 'no';
             }
-            $shipping_method_array['method_title']        = sanitize_text_field($_POST['woocommerce_' . $this->id . '_method_title']);
-            $shipping_method_array['method_handling_fee'] = sanitize_text_field($_POST['woocommerce_' . $this->id . '_method_handling_fee']);
-            $shipping_method_array['method_tax_status']   = sanitize_text_field($_POST['woocommerce_' . $this->id . '_method_tax_status']);
+            $shipping_method_array['method_title']        = sanitize_text_field(wp_unslash($_POST['woocommerce_' . $this->id . '_method_title'] ?? ''));
+            $shipping_method_array['method_handling_fee'] = sanitize_text_field(wp_unslash($_POST['woocommerce_' . $this->id . '_method_handling_fee'] ?? ''));
+            $shipping_method_array['method_tax_status']   = sanitize_text_field(wp_unslash($_POST['woocommerce_' . $this->id . '_method_tax_status'] ?? ''));
 
             // SAVE IT
             $shipping_method_array['method_table_rates'] = $options;
             $get_shipping_methods_options[$method_id]  = $shipping_method_array;
             update_option($this->jem_shipping_methods_option, $get_shipping_methods_options);
             if (isset($_GET['action']) && check_admin_referer('jemrt-shipping-nonce', 'jemrt-shipping-nonce') && current_user_can('manage_options')) {
-              $shipping_method_action = sanitize_text_field($_GET['action']);
+              $shipping_method_action = sanitize_text_field(wp_unslash($_GET['action'] ?? ''));
             }
 
             if ($shipping_method_action == 'new') {
@@ -1651,7 +1661,7 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
               // If it's free shipping append the Woo value)
               if ($cost === 0) {
-                $shipping_method_option['method_title'] = $shipping_method_option['method_title'] . ' (' . __('Free Shipping', 'woocommerce') . ')';
+                $shipping_method_option['method_title'] = $shipping_method_option['method_title'] . ' (' . __('Free Shipping', 'woocommerce-easy-table-rate-shipping') . ')';
               }
 
               if ($found) {
@@ -1779,16 +1789,16 @@ if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_
 
           // The first SQL query
 
-          $zone_id = $wpdb->get_col($wpdb->prepare("SELECT wszm.zone_id FROM {$wpdb->prefix}woocommerce_shipping_zone_methods as wszm WHERE wszm.instance_id = %s AND wszm.method_id LIKE %s", $instance_id, $method_id));
+          $zone_id = $wpdb->get_col($wpdb->prepare("SELECT wszm.zone_id FROM {$wpdb->prefix}woocommerce_shipping_zone_methods as wszm WHERE wszm.instance_id = %s AND wszm.method_id LIKE %s", $instance_id, $method_id)); //phpcs:ignore
           $zone_id = reset($zone_id); // converting to string
 
           // 1. Wrong Shipping method rate id
           if (empty($zone_id)) {
-            return __("Error! doesn't exist…");
+            return __("Error! doesn't exist ... ", 'woocommerce-easy-table-rate-shipping');
           }
           // 2. Default WC Zone name
           elseif ($zone_id == 0) {
-            return __('All Other countries');
+            return __('All Other countries', 'woocommerce-easy-table-rate-shipping');
           }
           // 3. Created Zone name
           else {
