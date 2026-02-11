@@ -7,13 +7,13 @@
   Author: JEM Plugins
   Author URI: https://www.jem-products.com
   Requires at least: 5.0
-  Tested up to: 6.8
+  Tested up to: 6.9
   Requires PHP: 7.2
   License: GPLv2
   Text-domain: woocommerce-easy-table-rate-shipping
 
   Copyright 2015 - 2022  JEM Products  (email: support@jem-products.com)
-  Copyright 2021 - 2025  WebFactory Ltd  (email: support@webfactoryltd.com.com)
+  Copyright 2021 - 2025  WebFactory Ltd  (email: support@webfactoryltd.com)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as

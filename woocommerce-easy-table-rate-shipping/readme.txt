@@ -2,7 +2,7 @@
 Contributors: merlinmonmouth, webfactory
 Tags: free shipping, table rate shipping, conditional shipping, tiered shipping, shipping
 Requires at least: 5.0
-Tested up to: 6.8
+Tested up to: 6.9
 Stable tag: 2.30
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -11,9 +11,11 @@ Advanced shipping rate for WooCommerce. Calculate rate shipping using country, w
 
 == Description ==
 
-Fully customizable **Table Rate Shipping (conditional shipping) plugin for WooCommerce** - look no further this is the rate shipping plugin that you need! An easy to use plugin that will provide your WooCommerce site with table rate shipping aka tiered shipping or conditional shipping.
+Fully customizable **Table Rate Shipping (conditional shipping) plugin for WooCommerce** - look no further as this is the rate shipping plugin you need! An easy to use plugin that will provide your WooCommerce site with <a href="https://jem-products.com/woocommerce-table-rate-shipping-pro/">table rate shipping</a> aka tiered shipping or conditional shipping.
 
 Rate shipping can be configured based on shipping weight and total shipping price (with min and max). Additional shipping rates can be created using standard WooCommerce shipping settings.
+
+Boost your sales instantly by enabling customers to wrap orders with <a href="https://wordpress.org/plugins/woocommerce-gift-wrapper/">Gift Wrapper</a>! Add it as a free service, or charge extra for wrapping.
 
 Take a look at the video and to see just how easy it is to set table rate shipping;
 
@@ -33,20 +35,17 @@ It is super-easy to add to your WooCommerce store and set up shipping rules.
 
 
 = Pro Version Features =
->
-> Some stores need more features, so we created a Pro version which is a lot more powerful.
->
-> * Set up unlimited shipping services e.g. Standard Shipping, Express Shipping
-> * Shipping can be driven by Country, State or Zip/Postal Code
-> * Use WooCommerce built-in Shipping Classes allowing for complex rules
-> * Base shipping on the number of items in the cart
-> * Calculate shipping based on the weight of items (lbs or kg, imperial or metric)
-> * Include a handling fee in your shipping costs
-> * Provides amazing flexibility for your store
-> * Fanatical Support
-> * ...and much more
->
-> [See what pro offers](https://jem-products.com/woocommerce-table-rate-shipping-pro/)
+* Set up unlimited shipping services e.g. Standard Shipping, Express Shipping
+* Shipping can be driven by Country, State or Zip/Postal Code
+* Use WooCommerce built-in Shipping Classes allowing for complex rules
+* Base shipping on the number of items in the cart
+* Calculate shipping based on the weight of items (lbs or kg, imperial or metric)
+* Include a handling fee in your shipping costs
+* Provides amazing flexibility for your store
+* Fanatical Support
+* ...and much more
+
+[See what pro offers](https://jem-products.com/woocommerce-table-rate-shipping-pro/)
 
 
 = Questions? =
