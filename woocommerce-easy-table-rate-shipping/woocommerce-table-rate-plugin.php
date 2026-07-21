@@ -11,6 +11,7 @@
   Requires PHP: 7.2
   License: GPLv2
   Text-domain: woocommerce-easy-table-rate-shipping
+  Requires Plugins:  woocommerce
 
   Copyright 2015 - 2022  JEM Products  (email: support@jem-products.com)
   Copyright 2021 - 2026  WebFactory Ltd  (email: support@webfactoryltd.com)
